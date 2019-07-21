@@ -17,7 +17,6 @@ self = stdenv.mkDerivation rec {
 
   patches = [
     ./8.0-gc-sections.patch
-    ./8.0-abi.patch
   ];
 
   preConfigure = stdenv.lib.optional stdenv.isDarwin ''
