@@ -1,5 +1,16 @@
 --- a/cmake/libutils.cmake
 +++ b/cmake/libutils.cmake
 @@ -345 +345 @@ MACRO(MERGE_CONVENIENCE_LIBRARIES)
--      COMMAND /usr/bin/libtool -static -o $<TARGET_FILE:${TARGET}>
-+      COMMAND libtool -static -o $<TARGET_FILE:${TARGET}>
+-      COMMAND /usr/bin/libtool -static -no_warning_for_no_symbols
++      COMMAND libtool -static -no_warning_for_no_symbols
+
+--- a/cmake/os/Darwin.cmake
++++ b/cmake/os//Darwin.cmake
+@@ -47,6 +47,6 @@
+ # Use Libtool -static rather than ranlib
+ SET(CMAKE_C_CREATE_STATIC_LIBRARY
+-  "/usr/bin/libtool -static -no_warning_for_no_symbols -o <TARGET> <LINK_FLAGS> <OBJECTS> ")
++  "libtool -static -no_warning_for_no_symbols -o <TARGET> <LINK_FLAGS> <OBJECTS> ")
+ SET(CMAKE_CXX_CREATE_STATIC_LIBRARY
+-  "/usr/bin/libtool -static -no_warning_for_no_symbols -o <TARGET> <LINK_FLAGS> <OBJECTS> ")
++  "libtool -static -no_warning_for_no_symbols -o <TARGET> <LINK_FLAGS> <OBJECTS> ")
