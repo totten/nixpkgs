@@ -424,6 +424,7 @@ in
   php74 = handleTest ./php { php = pkgs.php74; };
   php80 = handleTest ./php { php = pkgs.php80; };
   php81 = handleTest ./php { php = pkgs.php81; };
+  php82 = handleTest ./php { php = pkgs.php82; };
   pict-rs = handleTest ./pict-rs.nix {};
   pinnwand = handleTest ./pinnwand.nix {};
   plasma5 = handleTest ./plasma5.nix {};
