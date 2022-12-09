@@ -10,7 +10,7 @@ buildPecl {
     session
   ] ++ lib.optionals (lib.versionOlder php.version "8.0") [
     json
-  ] ++ lib.optionals (lib.versionOlder php.version "7.4") [
+  ] ++ lib.optionals (lib.versionOlder php.version "7.3") [
     hash
   ];
 

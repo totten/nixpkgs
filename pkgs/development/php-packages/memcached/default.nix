@@ -14,7 +14,7 @@ buildPecl {
 
   internalDeps = [
     php.extensions.session
-  ] ++ lib.optionals (lib.versionOlder php.version "7.4") [
+  ] ++ lib.optionals (lib.versionOlder php.version "7.3") [
     php.extensions.hash
   ];
 

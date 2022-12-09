@@ -334,7 +334,7 @@ lib.makeScope pkgs.newScope (self: with self; {
       { name = "gmp";
         buildInputs = [ gmp ];
         configureFlags = [ "--with-gmp=${gmp.dev}" ]; }
-      { name = "hash"; enable = lib.versionOlder php.version "7.4"; }
+      { name = "hash"; enable = lib.versionOlder php.version "7.3"; }
       { name = "iconv";
         configureFlags = [
           "--with-iconv${lib.optionalString stdenv.isDarwin "=${libiconv}"}"
