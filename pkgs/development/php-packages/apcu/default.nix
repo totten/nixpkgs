@@ -3,8 +3,8 @@
 buildPecl {
   pname = "apcu";
 
-  version = "5.1.21";
-  sha256 = "sha256-EDNTBEhpbufK3shQUPbfUTX7EzAHLvKnRWk5Ks/s+8E=";
+  version = "5.1.22";
+  sha256 = "07hsnkyfmbnyvyqgf8wl65v6nsk9lcfijmm3a9xfvq8js67hs2h1";
 
   buildInputs = [ pcre2 ];
   doCheck = true;
