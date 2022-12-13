@@ -289,7 +289,7 @@ let
           '';
 
           src = fetchurl {
-            url = "https://downloads.php.net/~pierrick/php-${version}.tar.bz2";
+            url = "https://www.php.net/distributions/php-${version}.tar.bz2";
             inherit sha256;
           };
 
