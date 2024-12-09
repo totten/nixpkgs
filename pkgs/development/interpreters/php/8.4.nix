@@ -5,10 +5,10 @@ let
     callPackage ./generic.nix (
       _args
       // {
-        version = "8.4.0alpha3";
+        version = "8.4.1";
         phpSrc = fetchurl {
-          url = "https://downloads.php.net/~saki/php-8.4.0alpha3.tar.xz";
-          hash = "sha256-aXzgIU6HKQdbsw+rnD16P1Xjyp4GQgMPckLHHmtiE4s=";
+          url = "https://www.php.net/distributions/php-8.4.1.tar.xz";
+          hash = "sha256-lMik/UGdRXSJUfptc71V9r3wra77iBSICme6pmAnMR8=";
         };
       }
     )
