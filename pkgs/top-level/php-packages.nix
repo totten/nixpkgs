@@ -262,6 +262,9 @@ in {
 
     igbinary = callPackage ../development/php-packages/igbinary { };
 
+    # Shadowed by built-in version on PHP < 8.3.
+    imap = callPackage ../development/php-packages/imap { };
+
     imagick = callPackage ../development/php-packages/imagick { };
 
     inotify = callPackage ../development/php-packages/inotify { };
@@ -440,6 +443,7 @@ in {
           name = "imap";
           buildInputs = [ uwimap openssl pam pcre2 libkrb5 ];
           configureFlags = [ "--with-imap=${uwimap}" "--with-imap-ssl" "--with-kerberos" ];
+          enable = lib.versionOlder php.version "8.3";
         }
         {
           name = "intl";
