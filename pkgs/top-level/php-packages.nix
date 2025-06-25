@@ -16,6 +16,7 @@
   gettext,
   gmp,
   html-tidy,
+  icu64,
   icu73,
   libffi,
   libiconv,
@@ -508,7 +509,13 @@ lib.makeScope pkgs.newScope (
               }
               {
                 name = "intl";
-                buildInputs = [ icu73 ];
+                buildInputs = [
+                  ## [Jun 2025] `Civi\Core\FormatTest` starts failing if we use newer icu70+.
+                  ## Of course, this doesn't make much sense, and maybe we're missing something. But for now...
+                  ## - We should have continuity in testing, so older PHP versions will stay on icu64.
+                  ## - We should also be able to test where the world is going, so newer PHP versions use icu73.
+                  (if lib.versionAtLeast php.version "8.4" then icu73 else icu64)
+                 ];
               }
               {
                 name = "ldap";
