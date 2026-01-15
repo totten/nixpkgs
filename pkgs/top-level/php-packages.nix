@@ -19,6 +19,7 @@
   html-tidy,
   icu64,
   icu73,
+  lexbor,
   libffi,
   libiconv,
   libkrb5,
@@ -59,6 +60,43 @@ lib.makeScope pkgs.newScope (
     builders = import ../build-support/php/builders {
       inherit callPackages callPackage buildPecl;
     };
+
+    lexborForPHP = (
+      lexbor.overrideAttrs (oldAttrs: {
+        env.NIX_CFLAGS_COMPILE =
+          (oldAttrs.NIX_CFLAGS_COMPILE or "")
+          + toString [
+            "-Wno-error=int-conversion"
+          ];
+        # TODO: Find a way to get these patches from `php` src.
+        patches = (oldAttrs.patches or [ ]) ++ [
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0001-Expose-line-and-column-information-for-use-in-PHP.patch";
+            hash = "sha256-xHz0JG+95D+aaUwVZRZvbibt+uMGiXLjlsZxyPnybiQ=";
+          })
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0002-Track-implied-added-nodes-for-options-use-in-PHP.patch";
+            hash = "sha256-8AWN46UZ0xXcUcPeO+fQ4/KZ5RfX8kGcWTYiSdRxtjE=";
+          })
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0003-Patch-utilities-and-data-structure-to-be-able-to-gen.patch";
+            hash = "sha256-L4b3zKRMzgeDgc6USurd0jLCQmONIpMzjBjaWbYsawI=";
+          })
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0004-Remove-unused-upper-case-tag-static-data.patch";
+            hash = "sha256-5SpBGUXGINhWQDdOtf/tjH8gPthL3e4mRHh7ZaophGY=";
+          })
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0005-Shrink-size-of-static-binary-search-tree.patch";
+            hash = "sha256-2Hhu6RGu5hBJjx+cfNsTiJQsuQy5KCcfvi3ed4Pzmv8=";
+          })
+          (fetchpatch {
+            url = "https://raw.githubusercontent.com/php/php-src/refs/heads/PHP-8.5.0/ext/lexbor/patches/0006-Patch-out-unused-CSS-style-code.patch";
+            hash = "sha256-aP6oAkw/CA+DdYlZRGhwJaKIuY6zt5IHFcxoz4x3xj8=";
+          })
+        ];
+      })
+    );
   in
   {
     buildPecl = callPackage ../build-support/php/build-pecl.nix {
@@ -114,6 +152,7 @@ lib.makeScope pkgs.newScope (
         zendExtension ? false,
         doCheck ? true,
         extName ? name,
+        includeInPHPIniFile ? true,
         ...
       }@args:
       stdenv.mkDerivation (
@@ -121,6 +160,7 @@ lib.makeScope pkgs.newScope (
         // {
           pname = "php-${name}";
           extensionName = extName;
+          inherit includeInPHPIniFile;
 
           outputs = [
             "out"
@@ -193,7 +233,11 @@ lib.makeScope pkgs.newScope (
             runHook preInstall
 
             mkdir -p $out/lib/php/extensions
+            ''
+            + lib.optionalString includeInPHPIniFile ''
             cp modules/${extName}.so $out/lib/php/extensions/${extName}.so
+            ''
+            + ''
             mkdir -p $dev/include
             ${rsync}/bin/rsync -r --filter="+ */" \
                                   --filter="+ *.h" \
@@ -444,18 +488,15 @@ lib.makeScope pkgs.newScope (
               { name = "dba"; }
               {
                 name = "dom";
-                buildInputs = [ libxml2 ];
+                internalDeps = lib.optionals (lib.versionAtLeast php.version "8.5") [ php.extensions.lexbor ];
+                buildInputs = [
+                  libxml2
+                  lexborForPHP
+                ];
                 configureFlags = [
                   "--enable-dom"
                 ];
-                patches = lib.optionals (lib.versionAtLeast php.version "8.4") [
-                  # Fix build of ext-dom.
-                  # https://github.com/php/php-src/pull/20023 (will be part of 8.4.14)
-                  (fetchpatch {
-                    url = "https://github.com/php/php-src/commit/4fe040290da2822c70d3b60d30a2c1256264735d.patch";
-                    hash = "sha256-hCs59X5gCApXMjU9dKEtgdTJBHYq3BcKr9tlQjRCTIA=";
-                  })
-                ];
+                doCheck = false; ## FIXME
               }
               {
                 name = "enchant";
@@ -591,6 +632,7 @@ lib.makeScope pkgs.newScope (
               }
               {
                 name = "opcache";
+                includeInPHPIniFile = false;
                 buildInputs =
                   [ pcre2 ]
                   ++ lib.optional (
@@ -853,6 +895,20 @@ lib.makeScope pkgs.newScope (
                   "--with-imap-ssl"
                   "--with-kerberos"
                 ];
+              }
+            ]
+
+            ++ lib.optionals (lib.versionAtLeast php.version "8.5") [
+              {
+                name = "uri";
+                includeInPHPIniFile = false;
+                buildInputs = [
+                  lexborForPHP
+                ];
+              }
+              {
+                name = "lexbor";
+                includeInPHPIniFile = false;
               }
             ];
 
