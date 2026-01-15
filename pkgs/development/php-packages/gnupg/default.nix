@@ -53,5 +53,6 @@ buildPecl {
     homepage = "https://pecl.php.net/package/gnupg";
     maintainers = with lib.maintainers; [ taikx4 ];
     teams = [ lib.teams.php ];
+    broken = lib.versionAtLeast php.version "8.5";
   };
 }

@@ -3,6 +3,7 @@
   lib,
   fetchFromGitHub,
   zlib,
+  php,
 }:
 
 let
@@ -32,5 +33,6 @@ buildPecl {
     homepage = "https://github.com/NoiseByNorthwest/php-spx";
     license = lib.licenses.php301;
     maintainers = with lib.maintainers; [ drupol ];
+    broken = lib.versionAtLeast php.version "8.5";
   };
 }

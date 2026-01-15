@@ -6,6 +6,7 @@
   valgrind,
   pcre2,
   fetchFromGitHub,
+  php,
 }:
 
 let
@@ -33,5 +34,6 @@ buildPecl {
     homepage = "https://www.swoole.com";
     license = lib.licenses.asl20;
     teams = [ lib.teams.php ];
+    broken = lib.versionAtLeast php.version "8.5";
   };
 }

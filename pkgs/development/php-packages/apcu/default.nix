@@ -3,6 +3,7 @@
   lib,
   pcre2,
   fetchFromGitHub,
+  php,
 }:
 
 let
@@ -33,5 +34,6 @@ buildPecl {
     homepage = "https://pecl.php.net/package/APCu";
     license = licenses.php301;
     teams = [ teams.php ];
+    broken = lib.versionAtLeast php.version "8.5";
   };
 }
