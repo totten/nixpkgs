@@ -632,7 +632,7 @@ lib.makeScope pkgs.newScope (
               }
               {
                 name = "opcache";
-                includeInPHPIniFile = false;
+                includeInPHPIniFile = (lib.versionOlder php.version "8.5");
                 buildInputs =
                   [ pcre2 ]
                   ++ lib.optional (
