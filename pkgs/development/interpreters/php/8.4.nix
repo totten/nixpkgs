@@ -4,8 +4,12 @@ let
   base = callPackage ./generic.nix (
     _args
     // {
-      version = "8.4.19";
-      hash = "sha256-vOt3mO03tEL+Ujrn7zRczCIx2wsCLTBzXC43jTJUoNQ=";
+### This works   
+#      version = "8.4.26";
+#      hash = "sha256-QglpTXsPY8RaN3PgfNwrv8cSSSZaXZUbH/U+EUftxco=";
+### This fails test re: php-filter
+      version = "8.4.27";
+      hash = "sha256-slMKh3xyL0sIyeF0owywi6wrfhkD7m6eMV8KqfX4LCQ=";
     }
   );
 in

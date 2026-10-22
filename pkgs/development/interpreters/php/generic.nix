@@ -328,11 +328,19 @@ let
           '';
 
           postFixup = ''
-            mkdir -p $dev/bin $dev/share/man/man1
+            mkdir -p $dev/bin $dev/lib $dev/share/man/man1
             mv $out/bin/phpize $out/bin/php-config $dev/bin/
+            mv $out/lib/build $dev/lib/
             mv $out/share/man/man1/phpize.1.gz \
                $out/share/man/man1/php-config.1.gz \
                $dev/share/man/man1/
+
+            substituteInPlace $dev/bin/phpize \
+              --replace-fail "$out/lib" "$dev/lib"
+          ''
+          + lib.optionalString (lib.versionAtLeast version "8.5") ''
+            # PHP 8.5+ has lexbor built into core; dom needs its headers.
+            cp -r ext/lexbor/lexbor $dev/include/php/ext/lexbor/
           '';
 
           src = if phpSrc == null then defaultPhpSrc else phpSrc;
