@@ -349,9 +349,12 @@ let
             lib.optionals (lib.versionOlder version "8.4") [
               ./fix-paths-php7.patch
             ]
-            ++ lib.optionals (lib.versionAtLeast version "8.4") [
+            ++ lib.optionals (lib.versionAtLeast version "8.4" && lib.versionOlder version "8.6") [
               ./fix-paths-php84.patch
             ]
+            ++ lib.optionals (lib.versionAtLeast version "8.6") [
+              ./fix-paths-php86.patch
+              ]
             ++ lib.optionals (lib.versionOlder version "8.2") [
               ./php2shell-php81.patch
             ]
