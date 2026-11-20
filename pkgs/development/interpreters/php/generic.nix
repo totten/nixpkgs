@@ -356,7 +356,10 @@ let
               ./fix-paths-php86.patch
               ]
             ++ lib.optionals (lib.versionOlder version "8.2") [
-              ./php2shell-php81.patch
+              ./php-8.1-enhanced-universal.patch
+              ./cve-2026-126714-php7-8.patch
+              ./cve-2026-128064-php7-8.patch
+              ./cve-2026-129496-php7-8.patch
             ]
             ++ extraPatches;
 
