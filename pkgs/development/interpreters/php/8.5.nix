@@ -4,10 +4,10 @@ let
   base = callPackage ./generic.nix (
     _args
     // {
-      version = "8.5.12";
+      version = "8.5.13";
       phpSrc = fetchurl {
-        url = "https://github.com/php/php-src/archive/refs/tags/php-8.5.12.tar.gz";
-        hash = "sha256-kUcCWSyB+Fyz9sK8oMvkIX0/5fWkuMo0qPk/dKNXX8c=";
+        url = "https://github.com/php/php-src/archive/refs/tags/php-8.5.13.tar.gz";
+        hash = "sha256-LKQeU/+4m0SOE0pCikIe10FUUOf7AGP/QFaQM3/ca9k=";
       };
     }
   );
