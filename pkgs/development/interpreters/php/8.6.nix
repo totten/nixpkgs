@@ -4,12 +4,8 @@ let
   base = callPackage ./generic.nix (
     _args
     // {
-      version = "8.6.0RC4";
-      phpSrc = fetchurl {
-        url = "https://downloads.php.net/~mbeccati/php-8.6.0RC4.tar.xz";
-        hash = "sha256-k/II2prgWb9oY7Dh0QHmxkdaew8Ky/bAhJUKtSL1FNg=";
-      };
-
+      version = "8.6.0";
+      hash = "sha256-niM+OJmaifNRozrmpydtHK9a3cuhHgnju+Oo0l9BH/E=";
     }
   );
 in
